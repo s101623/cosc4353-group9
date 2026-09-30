@@ -1,0 +1,26 @@
+main {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.field {
+  margin-bottom: 12px;
+}
+
+.field label,
+.field input,
+.field small,
+.field .error {
+  display: block;
+}
+
+.field input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.error {
+  color: #b00020;
+}
