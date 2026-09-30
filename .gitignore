@@ -1,1 +1,3 @@
 .DS_Store
+# local dev server script only (npm run dev), not part of the app
+package.json
