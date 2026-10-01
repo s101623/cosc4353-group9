@@ -96,3 +96,38 @@ a:hover {
         margin: 4px 0;
     }
 }
+
+/* service management form */
+
+.field {
+    margin-bottom: 15px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.field input,
+.field textarea,
+.field select {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.field textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.field .error {
+    display: block;
+    color: #b00020;
+    margin-top: 5px;
+    font-size: 14px;
+}
