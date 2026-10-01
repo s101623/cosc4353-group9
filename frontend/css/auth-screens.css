@@ -1,0 +1,100 @@
+/* styles used for the login/register/forgot password screens */
+
+main {
+    max-width: 420px;
+}
+
+section h1 {
+    margin-top: 0;
+    text-align: center;
+}
+
+p a {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    background: none;
+    color: #1a3c6e;
+    text-decoration: underline;
+    font-size: inherit;
+}
+
+@media (max-width: 600px) {
+    p a {
+        width: auto;
+        margin: 0;
+    }
+}
+
+.field small {
+    display: block;
+    margin-top: 5px;
+    color: #555555;
+    font-size: 13px;
+}
+
+#form-message {
+    margin-bottom: 0;
+}
+
+/* login page: photo background, footer bar pinned to the bottom of the window */
+body.login-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #f2f5fa url("../indexjpg.jpg") center / cover no-repeat fixed;
+}
+
+/* main fills the space between the header and the services bar,
+   and the login card is centered vertically inside it */
+body.login-page main {
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+body.login-page main section {
+    margin-bottom: 0;
+}
+
+/* bottom bar listing the office's services, same blue as the header */
+.services-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    background-color: #1a3c6e;
+    color: white;
+    padding: 16px 30px;
+}
+
+/* line-height 1 makes each box exactly as tall as its text,
+   so the service names center on the middle of "Services" */
+.services-bar h2 {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.services-bar ul {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    line-height: 1;
+    gap: 8px 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+@media (max-width: 600px) {
+    .services-bar {
+        padding: 15px;
+    }
+}

@@ -6,7 +6,9 @@ const services = [
 
 // status is one of: "waiting", "almost ready", "served"
 const queueEntries = [
-  { id: 1, serviceId: 1, visitorName: "Alex Visitor", userEmail: "visitor@example.com", joinedAt: "2026-10-01 09:20", status: "waiting" }
+  { id: 1, serviceId: 1, visitorName: "Alex Visitor", userEmail: "visitor@example.com", joinedAt: "2026-10-01 09:20", status: "waiting" },
+  { id: 2, serviceId: 1, visitorName: "Jordan Visitor", userEmail: "visitor2@example.com", joinedAt: "2026-10-01 09:25", status: "waiting" },
+  { id: 3, serviceId: 1, visitorName: "Sam Visitor", userEmail: "visitor3@example.com", joinedAt: "2026-10-01 09:30", status: "waiting" }
 ];
 
 // outcome is one of: "served", "left queue", "no show"
@@ -19,8 +21,10 @@ const notifications = [
   { id: 1, userEmail: "visitor@example.com", type: "queue update", message: "You joined the queue for Driver License Renewal.", time: "2026-10-01 09:20", read: false }
 ];
 
-// Mock accounts only. Staff accounts are created by an admin invite, visitors register themselves.
+
 const users = [
   { email: "visitor@example.com", password: "Visitor123", name: "Alex Visitor", role: "user" },
+  { email: "visitor2@example.com", password: "Visitor456", name: "Jordan Visitor", role: "user" },
+  { email: "visitor3@example.com", password: "Visitor789", name: "Sam Visitor", role: "user" },
   { email: "admin@queuesmart.gov", password: "Admin123", name: "Dana Staff", role: "admin" }
 ];
