@@ -12,8 +12,9 @@ function checkField(input) {
   const value = input.value.trim();
   const label = fieldLabel(input);
 
+  // same message for every empty required field on every form
   if (input.required && value === "") {
-    return label + " is required.";
+    return "Field is required.";
   }
   if (value === "") {
     return "";
