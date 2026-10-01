@@ -1,9 +1,14 @@
 // History screen
 // Uses the shared mock data from mock-data.js (no backend yet)
 
-// For now we pretend this visitor is logged in.
-// Later this will come from the login screen.
-var currentUserEmail = "visitor@example.com";
+// get the visitor who logged in (saved by the login screen)
+var currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+if (currentUser === null) {
+  // not logged in, so send them to the login page
+  window.location.href = "index.html";
+  currentUser = { email: "" };
+}
+var currentUserEmail = currentUser.email;
 
 // grab the parts of the page we need
 var historyBody = document.getElementById("historyBody");

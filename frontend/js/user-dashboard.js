@@ -1,10 +1,15 @@
 // User Dashboard screen
 // Uses the shared mock data from mock-data.js (no backend yet)
 
-// For now we pretend this visitor is logged in.
-// Later this will come from the login screen.
-var currentUserEmail = "visitor@example.com";
-var currentUserName = "Alex Visitor";
+// get the visitor who logged in (saved by the login screen)
+var currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+if (currentUser === null) {
+  // not logged in, so send them to the login page
+  window.location.href = "index.html";
+  currentUser = { email: "", name: "" };
+}
+var currentUserEmail = currentUser.email;
+var currentUserName = currentUser.name;
 
 // grab the parts of the page we need
 var welcomeMessage = document.getElementById("welcomeMessage");
@@ -64,7 +69,7 @@ function showCurrentQueue() {
   var service = getService(myEntry.serviceId);
   var position = getPosition(myEntry);
   // simple estimate: people ahead of you times the service duration
-  var wait = (position - 1) * service.duration;
+    var wait = position * service.duration;
 
   currentQueueInfo.textContent = service.name + " | Position: #" + position + " | Estimated wait: " + wait + " minutes | Status: " + myEntry.status;
   viewQueueLink.style.display = "inline";

@@ -1,10 +1,15 @@
 // Join Queue screen
 // Uses the shared mock data from mock-data.js (no backend yet)
 
-// For now we pretend this visitor is logged in.
-// Later this will come from the login screen.
-var currentUserEmail = "visitor@example.com";
-var currentUserName = "Alex Visitor";
+// get the visitor who logged in (saved by the login screen)
+var currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+if (currentUser === null) {
+  // not logged in, so send them to the login page
+  window.location.href = "index.html";
+  currentUser = { email: "", name: "" };
+}
+var currentUserEmail = currentUser.email;
+var currentUserName = currentUser.name;
 
 // grab the parts of the page we need
 var serviceSelect = document.getElementById("serviceSelect");
@@ -87,7 +92,7 @@ function showServiceInfo() {
   serviceDescription.textContent = service.description;
   peopleWaiting.textContent = waiting;
   // simple estimate: people ahead of you times the service duration
-  estimatedWait.textContent = waiting * service.duration;
+    estimatedWait.textContent = (waiting + 1) * service.duration;
 }
 
 // turn the buttons on or off depending on if the visitor is already in a queue
