@@ -98,3 +98,12 @@ th {
   background-color: #1a3c6e;
   color: white;
 }
+
+/* the card on the Queue Status screen */
+.card {
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 16px;
+}
