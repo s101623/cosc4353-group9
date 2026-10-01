@@ -5,10 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QueueSmart - Queue Management</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin-screens.css">
 </head>
 <body>
-    <h1>Queue Management</h1>
+    <header>
+        <h2>QueueSmart</h2>
+        <p>Staff Dashboard</p>
+    </header>
+
+    <main>
+        <h1>Queue Management</h1>
+
+        <section>
+            <h2>Select Service</h2>
+
+            <div class="field">
+                <label for="queue-service">Service:</label>
+                <select id="queue-service">
+                    <!-- Services will be added using mock data -->
+                </select>
+            </div>
+        </section>
+
+        <section>
+            <h2>Current Queue</h2>
+
+            <p id="queue-summary"></p>
+
+            <div id="queue-list">
+                <!-- Visitors in the selected queue will be displayed here -->
+            </div>
+
+            <button type="button" id="serve-next">Serve Next</button>
+        </section>
+
+        <section>
+            <h2>Navigation</h2>
+
+            <a href="admin-dashboard.html">Admin Dashboard</a>
+            <a href="service-management.html">Service Management</a>
+        </section>
+    </main>
 
     <script src="js/mock-data.js"></script>
+    <script src="js/queue-management.js"></script>
 </body>
 </html>
