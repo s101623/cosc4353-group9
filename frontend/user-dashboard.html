@@ -5,10 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QueueSmart - User Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user-screens.css">
 </head>
 <body>
     <h1>User Dashboard</h1>
 
+    <p>
+        <a href="join-queue.html">Join a Queue</a> |
+        <a href="history.html">History</a>
+    </p>
+
+    <main>
+        <h2 id="welcomeMessage">Welcome back!</h2>
+
+        <div class="box" id="currentQueueBox">
+            <h2>Current Queue</h2>
+            <p id="currentQueueInfo"></p>
+            <a href="queue-status.html" id="viewQueueLink">View Queue Status</a>
+        </div>
+
+        <div class="box" id="servicesBox">
+            <h2>Available Services</h2>
+            <ul id="serviceList">
+            </ul>
+        </div>
+
+        <div class="box" id="notificationsBox">
+            <h2>Notifications</h2>
+            <p id="notificationCount"></p>
+            <ul id="notificationList">
+            </ul>
+        </div>
+    </main>
+
     <script src="js/mock-data.js"></script>
+    <script src="js/user-dashboard.js"></script>
 </body>
 </html>

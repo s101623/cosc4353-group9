@@ -62,3 +62,21 @@ button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+/* the white boxes on the dashboard */
+.box {
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 16px;
+}
+
+.box ul {
+  list-style: none;
+  padding: 0;
+}
+
+.box li {
+  margin-bottom: 6px;
+}
