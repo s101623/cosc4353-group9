@@ -80,3 +80,21 @@ button:disabled {
 .box li {
   margin-bottom: 6px;
 }
+
+/* the history table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+th, td {
+  border: 1px solid #cccccc;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #1a3c6e;
+  color: white;
+}
