@@ -27,13 +27,6 @@ function findUserByEmail(email) {
   });
 }
 
-function findUserByUsername(username) {
-  const target = username.trim().toLowerCase();
-  return getAllUsers().find(function (user) {
-    return user.username && user.username.toLowerCase() === target;
-  });
-}
-
 function findUserByLicense(license) {
   const target = license.trim();
   return getAllUsers().find(function (user) {
@@ -41,10 +34,9 @@ function findUserByLicense(license) {
   });
 }
 
-// Login accepts email, username, or driver's license number.
-// Usernames can contain "@", so the value can't be sorted by its format. Registration
-// keeps the three from overlapping between accounts, so trying each in turn is safe.
+// Login accepts email or driver's license number.
+// Emails always contain "@" and license numbers are digits only, so they can't be confused.
 function findUserByLogin(identifier) {
   const value = identifier.trim();
-  return findUserByEmail(value) || findUserByUsername(value) || findUserByLicense(value);
+  return value.includes("@") ? findUserByEmail(value) : findUserByLicense(value);
 }

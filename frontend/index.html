@@ -5,32 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QueueSmart - Login</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin-screens.css">
+    <link rel="stylesheet" href="css/auth-screens.css">
 </head>
-<body>
+<body class="login-page">
+    <header>
+        <h2>QueueSmart</h2>
+    </header>
+
     <main>
-        <h1>Login</h1>
+        <section>
+            <h1>Login</h1>
 
-        <form id="login-form" novalidate>
-            <div class="field">
-                <label for="login-id">Email, Username, or Driver's License #:</label>
-                <!-- max email length is 254 char -->
-                <input type="text" id="login-id" name="login-id" required maxlength="254" autocomplete="username">
-                <span class="error" id="login-id-error"></span>
-            </div>
+            <form id="login-form" novalidate>
+                <div class="field">
+                    <label for="login-id">Email or Driver's License #:</label>
+                    <!-- max email length is 254 char -->
+                    <input type="text" id="login-id" name="login-id" required maxlength="254" autocomplete="username">
+                    <span class="error" id="login-id-error"></span>
+                </div>
 
-            <div class="field">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required maxlength="64" autocomplete="current-password">
-                <span class="error" id="password-error"></span>
-            </div>
+                <div class="field">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required maxlength="64" autocomplete="current-password">
+                    <span class="error" id="password-error"></span>
+                </div>
 
-            <button type="submit">Log In</button>
-            <p class="error" id="form-message"></p>
-        </form>
+                <button type="submit">Log In</button>
+                <p class="error" id="form-message"></p>
+            </form>
 
-        <p><a href="forgot-password.html">Forgot password?</a></p>
-        <p>New visitor? <a href="register.html">Create an account</a></p>
+            <p><a href="forgot-password.html">Forgot password?</a></p>
+            <p>New visitor? <a href="register.html">Create an account</a></p>
+        </section>
     </main>
+
+    <footer class="services-bar">
+        <h2>Services</h2>
+        <ul>
+            <li>⋅</li>
+            <li>Driver's License Renewal </li>
+            <li>⋅</li>
+            <li>ID Replacement</li>
+            <li>⋅</li>
+            <li>Vehicle Registration</li>
+        </ul>
+    </footer>
 
     <script src="js/mock-data.js"></script>
     <script src="js/validation.js"></script>

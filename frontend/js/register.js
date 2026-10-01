@@ -42,20 +42,13 @@ registerForm.addEventListener("submit", function (event) {
   }
 
   const emailInput = document.getElementById("email");
-  if (checkField(emailInput) === "" && (findUserByEmail(emailInput.value) || findUserByUsername(emailInput.value))) {
+  if (checkField(emailInput) === "" && findUserByEmail(emailInput.value)) {
     showFieldError(emailInput, "An account with this email already exists.");
     isValid = false;
   }
 
-  const usernameInput = document.getElementById("username");
-  // also can't match someone's email or license number, since all three can be used to log in
-  if (checkField(usernameInput) === "" && (findUserByUsername(usernameInput.value) || findUserByEmail(usernameInput.value) || findUserByLicense(usernameInput.value))) {
-    showFieldError(usernameInput, "This username is already taken.");
-    isValid = false;
-  }
-
   const licenseInput = document.getElementById("license");
-  if (checkField(licenseInput) === "" && (findUserByLicense(licenseInput.value) || findUserByUsername(licenseInput.value))) {
+  if (checkField(licenseInput) === "" && findUserByLicense(licenseInput.value)) {
     showFieldError(licenseInput, "An account with this driver's license number already exists.");
     isValid = false;
   }
@@ -71,7 +64,6 @@ registerForm.addEventListener("submit", function (event) {
   const lastName = document.getElementById("last-name").value.trim();
 
   saveRegisteredUser({
-    username: usernameInput.value.trim(),
     email: emailInput.value.trim().toLowerCase(),
     // kept as a string so leading zeros aren't lost
     license: licenseInput.value.trim(),

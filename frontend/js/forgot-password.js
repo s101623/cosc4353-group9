@@ -1,13 +1,11 @@
-// Password reset is not implemented yet (no backend or email service).
-// This screen only validates the input and shows what would happen next.
-
+// Password reset is not implemented yet, can be removed down the line
 const emailForm = document.getElementById("email-form");
-const usernameForm = document.getElementById("username-form");
+const licenseForm = document.getElementById("license-form");
 const resetMessage = document.getElementById("form-message");
 
 
 attachLiveValidation(emailForm);
-attachLiveValidation(usernameForm);
+attachLiveValidation(licenseForm);
 
 function showForm(formToShow, formToHide) {
   formToHide.hidden = true;
@@ -15,14 +13,14 @@ function showForm(formToShow, formToHide) {
   resetMessage.textContent = "";
 }
 
-document.getElementById("show-username-form").addEventListener("click", function (event) {
+document.getElementById("show-license-form").addEventListener("click", function (event) {
   event.preventDefault();
-  showForm(usernameForm, emailForm);
+  showForm(licenseForm, emailForm);
 });
 
 document.getElementById("show-email-form").addEventListener("click", function (event) {
   event.preventDefault();
-  showForm(emailForm, usernameForm);
+  showForm(emailForm, licenseForm);
 });
 
 function handleResetSubmit(event) {
@@ -39,4 +37,4 @@ function handleResetSubmit(event) {
 }
 
 emailForm.addEventListener("submit", handleResetSubmit);
-usernameForm.addEventListener("submit", handleResetSubmit);
+licenseForm.addEventListener("submit", handleResetSubmit);
