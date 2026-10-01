@@ -5,10 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QueueSmart - Join Queue</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user-screens.css">
 </head>
 <body>
     <h1>Join Queue</h1>
 
+    <p><a href="user-dashboard.html">Back to Dashboard</a></p>
+
+    <main>
+        <h2>Select a Service</h2>
+        <select id="serviceSelect">
+        </select>
+
+        <div id="serviceInfo">
+            <p>Description: <span id="serviceDescription"></span></p>
+            <p>Estimated wait: <span id="estimatedWait"></span> minutes</p>
+            <p>People waiting: <span id="peopleWaiting"></span></p>
+        </div>
+
+        <button id="joinButton">Join Queue</button>
+        <button id="leaveButton">Leave Queue</button>
+
+        <p id="message"></p>
+    </main>
+
     <script src="js/mock-data.js"></script>
+    <script src="js/join-queue.js"></script>
 </body>
 </html>

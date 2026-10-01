@@ -1,0 +1,64 @@
+/* Styles for the user screens (Join Queue, Queue Status, Dashboard, History) */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f5fa;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #1a3c6e;
+}
+
+h2 {
+  color: #1a3c6e;
+}
+
+select {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+/* the box that shows description, wait time, and people waiting */
+#serviceInfo {
+  background-color: white;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 16px;
+}
+
+button {
+  padding: 10px 18px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 4px;
+}
+
+#joinButton {
+  background-color: #1a3c6e;
+  color: white;
+}
+
+#leaveButton {
+  background-color: #b00020;
+  color: white;
+}
+
+/* the message shown after joining or leaving */
+#message {
+  font-weight: bold;
+  color: #1a3c6e;
+}
+
+/* buttons look faded when they can't be clicked */
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
