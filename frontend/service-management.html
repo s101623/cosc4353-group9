@@ -5,10 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QueueSmart - Service Management</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin-screens.css">
 </head>
 <body>
-    <h1>Service Management</h1>
+    <header>
+        <h2>QueueSmart</h2>
+        <p>Staff Dashboard</p>
+    </header>
+
+    <main>
+        <h1>Service Management</h1>
+
+        <section>
+            <h2>Create Service</h2>
+
+            <form id="service-form" novalidate>
+                <div class="field">
+                    <label for="service-name">Service Name:</label>
+                    <input type="text" id="service-name" name="service-name"
+                           maxlength="100" required>
+                    <span class="error" id="service-name-error"></span>
+                </div>
+
+                <div class="field">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description"
+                              required></textarea>
+                    <span class="error" id="description-error"></span>
+                </div>
+
+                <div class="field">
+                    <label for="duration">Expected Duration (minutes):</label>
+                    <input type="number" id="duration" name="duration"
+                           min="1" required>
+                    <span class="error" id="duration-error"></span>
+                </div>
+
+                <div class="field">
+                    <label for="priority">Priority Level:</label>
+                    <select id="priority" name="priority" required>
+                        <option value="">Select priority</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                    <span class="error" id="priority-error"></span>
+                </div>
+
+                <button type="submit">Create Service</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>Current Services</h2>
+
+            <div id="service-management-list">
+                <!-- services are displayed here using mock data -->
+            </div>
+        </section>
+
+        <section>
+            <h2>Navigation</h2>
+            <a href="admin-dashboard.html">Admin Dashboard</a>
+            <a href="queue-management.html">Queue Management</a>
+        </section>
+    </main>
 
     <script src="js/mock-data.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/service-management.js"></script>
 </body>
 </html>
