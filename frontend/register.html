@@ -7,8 +7,76 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>Register</h1>
+    <main>
+        <h1>Register</h1>
+
+        <form id="register-form" novalidate>
+            <div class="field">
+                <label for="first-name">First Name:</label>
+                <input type="text" id="first-name" name="first-name" required maxlength="50" autocomplete="given-name">
+                <span class="error" id="first-name-error"></span>
+            </div>
+
+            <div class="field">
+                <label for="middle-name">Middle Name (optional):</label>
+                <input type="text" id="middle-name" name="middle-name" maxlength="50" autocomplete="additional-name">
+                <span class="error" id="middle-name-error"></span>
+            </div>
+
+            <div class="field">
+                <label for="last-name">Last Name:</label>
+                <input type="text" id="last-name" name="last-name" required maxlength="50" autocomplete="family-name">
+                <span class="error" id="last-name-error"></span>
+            </div>
+
+            <div class="field">
+                <label for="dob">Date of Birth:</label>
+                <input type="text" id="dob" name="dob" required inputmode="numeric" maxlength="10" placeholder="MM/DD/YYYY" data-format="mm/dd/yyyy" data-min="1900-01-01" data-before-today data-min-age="16" autocomplete="bday">
+                <span class="error" id="dob-error"></span>
+            </div>
+
+            <div class="field">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required minlength="3" maxlength="20" pattern="(?=.*[A-Za-z])(?=.*[0-9])(?=.*[^A-Za-z0-9\s])\S+" title="Username must include at least one letter, one number, and one special character, with no spaces." autocomplete="username">
+                <small>3-20 characters, one letter, one number, and one special character required.</small>
+                <span class="error" id="username-error"></span>
+            </div>
+
+            <div class="field">
+                <label for="license">Driver's License #:</label>
+                <input type="text" id="license" name="license" required inputmode="numeric" maxlength="8" pattern="[0-9]{1,8}" title="Driver's license number can only contain numbers" data-format="digits" autocomplete="off">
+                <span class="error" id="license-error"></span>
+            </div>
+
+            <div class="field">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required maxlength="254" autocomplete="email">
+                <span class="error" id="email-error"></span>
+            </div>
+
+            <div class="field">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required minlength="8" maxlength="64" autocomplete="new-password">
+                <small>8-64 characters, with at least one letter, one number, and one special character (for example ! @ # $).</small>
+                <span class="error" id="password-error"></span>
+            </div>
+
+            <div class="field">
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" required maxlength="64" autocomplete="new-password">
+                <span class="error" id="confirm-password-error"></span>
+            </div>
+
+            <button type="submit">Create Account</button>
+            <p id="form-message"></p>
+        </form>
+
+        <p>Already have an account? <a href="index.html">Log in</a></p>
+    </main>
 
     <script src="js/mock-data.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/register.js"></script>
 </body>
 </html>
