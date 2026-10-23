@@ -1,10 +1,17 @@
-//handles the service management screen
+//handles the service management screen with backend API data
+
 const serviceForm = document.getElementById("service-form");
 const serviceManagementList = document.getElementById("service-management-list");
 
+let services = [];
 let editingService = null;
 
-//displays all current services
+async function loadServices() {
+    const response = await fetch("/api/services");
+    services = await response.json();
+    displayServices();
+}
+
 function displayServices() {
     serviceManagementList.innerHTML = "";
 
@@ -47,46 +54,55 @@ function displayServices() {
     });
 }
 
-//use the shared validation from validation.js
 attachLiveValidation(serviceForm);
 
-serviceForm.addEventListener("submit", function (event) {
+serviceForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
     if (!validateForm(serviceForm)) {
         return;
     }
 
-    const name = document.getElementById("service-name").value.trim();
-    const description = document.getElementById("description").value.trim();
-    const duration = Number(document.getElementById("duration").value);
-    const priority = document.getElementById("priority").value;
+    const serviceData = {
+        name: document.getElementById("service-name").value.trim(),
+        description: document.getElementById("description").value.trim(),
+        duration: Number(document.getElementById("duration").value),
+        priority: document.getElementById("priority").value
+    };
+
+    let response;
 
     if (editingService) {
-        editingService.name = name;
-        editingService.description = description;
-        editingService.duration = duration;
-        editingService.priority = priority;
+        response = await fetch("/api/services/" + editingService.id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(serviceData)
+        });
 
         editingService = null;
 
         serviceForm.querySelector('button[type="submit"]').textContent =
             "Create Service";
     } else {
-        const newService = {
-            id: services.length + 1,
-            name: name,
-            description: description,
-            duration: duration,
-            priority: priority,
-            isOpen: true
-        };
+        response = await fetch("/api/services", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(serviceData)
+        });
+    }
 
-        services.push(newService);
+    if (!response.ok) {
+        const error = await response.json();
+        alert(error.error);
+        return;
     }
 
     serviceForm.reset();
-    displayServices();
+    await loadServices();
 });
 
-displayServices();
+loadServices();
