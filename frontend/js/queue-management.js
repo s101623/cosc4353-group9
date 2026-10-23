@@ -1,35 +1,51 @@
-//handless the queue management screen
+// Handles the queue management screen with backend API data
+
 const serviceSelect = document.getElementById("queue-service");
 const queueList = document.getElementById("queue-list");
 const queueSummary = document.getElementById("queue-summary");
 const serveNextButton = document.getElementById("serve-next");
 
-//add services to the dropdown
-services.forEach(function (service) {
-    const option = document.createElement("option");
-    option.value = service.id;
-    option.textContent = service.name;
-    serviceSelect.appendChild(option);
-});
+async function loadServices() {
+    const response = await fetch("/api/services");
+    const services = await response.json();
 
-//returns the visitors waiting for the selected service
-function getSelectedQueue() {
-    const serviceId = Number(serviceSelect.value);
+    serviceSelect.innerHTML = "";
 
-    return queueEntries.filter(function (entry) {
-        return entry.serviceId === serviceId && entry.status !== "served";
+    services.forEach(function (service) {
+        const option = document.createElement("option");
+        option.value = service.id;
+        option.textContent = service.name;
+        serviceSelect.appendChild(option);
     });
+
+    if (services.length > 0) {
+        await displayQueue();
+    }
 }
 
-//displays the selected queue
-function displayQueue() {
-    const selectedQueue = getSelectedQueue();
+async function displayQueue() {
+    const serviceId = Number(serviceSelect.value);
+
+    const response = await fetch("/api/queues/" + serviceId);
+    const data = await response.json();
 
     queueList.innerHTML = "";
-    queueSummary.textContent =
-        selectedQueue.length + " visitor(s) currently in queue";
 
-    if (selectedQueue.length === 0) {
+    if (!response.ok) {
+        queueSummary.textContent = "";
+        const message = document.createElement("p");
+        message.textContent = data.error;
+        queueList.appendChild(message);
+        serveNextButton.disabled = true;
+        return;
+    }
+
+    const entries = data.entries;
+
+    queueSummary.textContent =
+        entries.length + " visitor(s) currently in queue";
+
+    if (entries.length === 0) {
         const message = document.createElement("p");
         message.textContent = "There are currently no visitors in this queue.";
         queueList.appendChild(message);
@@ -39,7 +55,7 @@ function displayQueue() {
 
     serveNextButton.disabled = false;
 
-    selectedQueue.forEach(function (entry, index) {
+    entries.forEach(function (entry) {
         const visitorCard = document.createElement("div");
         visitorCard.className = "queue-card";
 
@@ -47,90 +63,38 @@ function displayQueue() {
         visitorName.textContent = entry.visitorName;
 
         const position = document.createElement("p");
-        position.textContent = "Position: " + (index + 1);
+        position.textContent = "Position: " + entry.position;
 
         const status = document.createElement("p");
         status.textContent = "Status: " + entry.status;
 
-        const moveUpButton = document.createElement("button");
-        moveUpButton.textContent = "Move Up";
-        moveUpButton.disabled = index === 0;
-
-        moveUpButton.addEventListener("click", function () {
-            moveVisitor(entry, -1);
-        });
-
-        const moveDownButton = document.createElement("button");
-        moveDownButton.textContent = "Move Down";
-        moveDownButton.disabled = index === selectedQueue.length - 1;
-
-        moveDownButton.addEventListener("click", function () {
-            moveVisitor(entry, 1);
-        });
-
-        const removeButton = document.createElement("button");
-        removeButton.textContent = "Remove";
-
-        removeButton.addEventListener("click", function () {
-            removeVisitor(entry);
-        });
-
         visitorCard.appendChild(visitorName);
         visitorCard.appendChild(position);
         visitorCard.appendChild(status);
-        visitorCard.appendChild(moveUpButton);
-        visitorCard.appendChild(moveDownButton);
-        visitorCard.appendChild(removeButton);
 
         queueList.appendChild(visitorCard);
     });
 }
 
-//moves a visitor up or down in queueEntries
-function moveVisitor(entry, direction) {
-    const selectedQueue = getSelectedQueue();
-    const currentPosition = selectedQueue.indexOf(entry);
-    const newPosition = currentPosition + direction;
+serveNextButton.addEventListener("click", async function () {
+    const serviceId = Number(serviceSelect.value);
 
-    if (newPosition < 0 || newPosition >= selectedQueue.length) {
+    const response = await fetch(
+        "/api/queues/" + serviceId + "/serve-next",
+        {
+            method: "POST"
+        }
+    );
+
+    if (!response.ok) {
+        const error = await response.json();
+        alert(error.error);
         return;
     }
 
-    const otherEntry = selectedQueue[newPosition];
-
-    const firstIndex = queueEntries.indexOf(entry);
-    const secondIndex = queueEntries.indexOf(otherEntry);
-
-    queueEntries[firstIndex] = otherEntry;
-    queueEntries[secondIndex] = entry;
-
-    displayQueue();
-}
-
-//removes a visitor from the queue
-function removeVisitor(entry) {
-    const index = queueEntries.indexOf(entry);
-
-    if (index !== -1) {
-        queueEntries.splice(index, 1);
-    }
-
-    displayQueue();
-}
-
-//serves the visitor at the front of the queue
-serveNextButton.addEventListener("click", function () {
-    const selectedQueue = getSelectedQueue();
-
-    if (selectedQueue.length === 0) {
-        return;
-    }
-
-    selectedQueue[0].status = "served";
-    displayQueue();
+    await displayQueue();
 });
 
-//show a different queue when another service is selected
 serviceSelect.addEventListener("change", displayQueue);
 
-displayQueue();
+loadServices();
