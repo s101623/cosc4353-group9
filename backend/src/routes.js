@@ -6,6 +6,7 @@ const { joinQueue, leaveQueue } = require("./queue");
 const { calculateWaitTime, getPosition } = require("./waitTime");
 const { getUserHistory } = require("./history");
 const { getUserNotifications, notifyJoined } = require("./notifications");
+const { createService, updateService } = require("./services"); 
 
 const router = express.Router();
 
@@ -23,9 +24,40 @@ router.get("/health", function (req, res) {
   res.json({ status: "ok" });
 });
 
-// Services (read-only here; create/update belong to the service management module)
+// Services create/update belong to the service management module
 router.get("/services", function (req, res) {
   res.json(db.services);
+});
+
+router.post("/services", function (req, res) {
+    try {
+        const service = createService(db.services, req.body);
+        res.status(201).json(service);
+    } catch (err) {
+        sendError(res, err);
+    }
+});
+
+router.put("/services/:id", function (req, res) {
+    try {
+        const serviceId = Number(req.params.id);
+
+        if (!Number.isInteger(serviceId)) {
+            return res.status(400).json({
+                error: "Service id must be a number"
+            });
+        }
+
+        const service = updateService(
+            db.services,
+            serviceId,
+            req.body
+        );
+
+        res.json(service);
+    } catch (err) {
+        sendError(res, err);
+    }
 });
 
 // Current queue for one service, in serving order, with each person's position
