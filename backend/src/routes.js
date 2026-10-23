@@ -7,6 +7,7 @@ const { calculateWaitTime, getPosition } = require("./waitTime");
 const { getUserHistory } = require("./history");
 const { getUserNotifications, notifyJoined } = require("./notifications");
 const { createService, updateService } = require("./services"); 
+const { serveNextUser } = require("./adminQueue");
 
 const router = express.Router();
 
@@ -74,6 +75,23 @@ router.get("/queues/:serviceId", function (req, res) {
     })
     .sort(function (a, b) { return a.position - b.position; });
   res.json({ service: service, entries: waiting });
+});
+
+router.post("/queues/:serviceId/serve-next", function (req, res) {
+    try {
+        const serviceId = Number(req.params.serviceId);
+
+        if (!Number.isInteger(serviceId)) {
+            return res.status(400).json({
+                error: "Service id must be a number"
+            });
+        }
+
+        const servedUser = serveNextUser(db.queueEntries, serviceId);
+        res.json(servedUser);
+    } catch (err) {
+        sendError(res, err);
+    }
 });
 
 router.post("/queues/join", function (req, res) {
