@@ -27,9 +27,10 @@ const notifications = [
 ];
 
 
+// changed all mock passwords to meet actual password requirments
 const users = [
-  { email: "visitor@example.com", password: "Visitor123", name: "Alex Visitor", role: "user" },
-  { email: "visitor2@example.com", password: "Visitor456", name: "Jordan Visitor", role: "user" },
-  { email: "visitor3@example.com", password: "Visitor789", name: "Sam Visitor", role: "user" },
-  { email: "admin@queuesmart.gov", password: "Admin123", name: "Dana Staff", role: "admin" }
+  { email: "visitor@example.com", password: "password123!", name: "Alex Visitor", role: "user" },
+  { email: "visitor2@example.com", password: "password123!", name: "Jordan Visitor", role: "user" },
+  { email: "visitor3@example.com", password: "password123!", name: "Sam Visitor", role: "user" },
+  { email: "admin@queuesmart.gov", password: "password123!", name: "Dana Staff", role: "admin" }
 ];
