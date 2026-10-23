@@ -4,22 +4,24 @@ function showQueueStatus() {
     window.location.href = "index.html";
     return;
 }
-const entry = queueEntries.find(function (e) { return e.userEmail === currentUser.email; });
-if (!entry) {
-    document.getElementById("message").textContent = "You are not in a queue right now.";
-    document.getElementById("queue-card").hidden = true;
-    return;
-}
-const ahead = queueEntries.filter(function (e) { return e.serviceId === entry.serviceId && e.status !== "served" && e.joinedAt < entry.joinedAt; });
-document.getElementById("position").textContent = ahead.length + 1;
-document.getElementById("status").textContent = entry.status;
-
-
-
-const service = services.find(function (s) { return s.id === entry.serviceId; });
-document.getElementById("service-name").textContent = service.name;
-document.getElementById("wait-time").textContent = (ahead.length + 1) * service.duration + " minutes";
-
-
+    fetch("/api/queues/status/" + currentUser.email)
+        .then(function (response) {
+            if (response.status === 404) {
+                document.getElementById("message").textContent = "You are not in a queue right now.";
+                document.getElementById("queue-card").hidden = true;
+                return null;
+            }
+            return response.json();
+        })
+        .then(function (data) {
+            if (!data) {
+                return;
+            }
+            document.getElementById("position").textContent = data.position;
+            document.getElementById("status").textContent = data.status;
+            document.getElementById("service-name").textContent = data.serviceName;
+            document.getElementById("wait-time").textContent = data.estimatedWait + " minutes";
+            
+        });
 }
 showQueueStatus();
