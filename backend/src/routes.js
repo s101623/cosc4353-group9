@@ -5,6 +5,7 @@ const db = require("./data");
 const { joinQueue, leaveQueue } = require("./queue");
 const { calculateWaitTime, getPosition } = require("./waitTime");
 const { getUserHistory } = require("./history");
+const { getUserNotifications, notifyJoined } = require("./notifications");
 
 const router = express.Router();
 
@@ -46,6 +47,8 @@ router.get("/queues/:serviceId", function (req, res) {
 router.post("/queues/join", function (req, res) {
   try {
     const result = joinQueue(db.queueEntries, db.services, req.body);
+    const service = findService(result.entry.serviceId);
+    notifyJoined(db.notifications, result.entry.userEmail, service.name);
     res.status(201).json(result);
   } catch (err) {
     sendError(res, err);
@@ -82,6 +85,14 @@ router.get("/queues/status/:email", function (req, res) {
 router.get("/history/:email", function (req, res) {
   try {
     res.json(getUserHistory(db.history, req.params.email));
+  } catch (err) {
+    sendError(res, err);
+  }
+});
+
+router.get("/notifications/:email", function (req, res) {
+  try {
+    res.json(getUserNotifications(db.notifications, req.params.email));
   } catch (err) {
     sendError(res, err);
   }
