@@ -19,11 +19,56 @@ test("GET /api/services lists the seeded services", async () => {
   expect(res.body[0].name).toBe("Driver License Renewal");
 });
 
+test("POST /api/services creates a service", async () => {
+  const body = {
+    name: "New Service",
+    description: "Test service",
+    duration: 20,
+    priority: "medium"
+  };
+
+  const res = await request(app).post("/api/services").send(body);
+
+  expect(res.status).toBe(201);
+  expect(res.body.name).toBe("New Service");
+  expect(db.services.length).toBe(6);
+});
+
+test("PUT /api/services/:id updates a service", async () => {
+  const res = await request(app).put("/api/services/1").send({
+    duration: 25,
+    priority: "high"
+  });
+
+  expect(res.status).toBe(200);
+  expect(res.body.duration).toBe(25);
+  expect(res.body.priority).toBe("high");
+});
+
+test("POST /api/services rejects invalid service data", async () => {
+  const res = await request(app).post("/api/services").send({
+    name: "",
+    description: "Bad service",
+    duration: 10,
+    priority: "low"
+  });
+
+  expect(res.status).toBe(400);
+});
+
 test("GET /api/queues/:serviceId returns the queue in order with positions", async () => {
   const res = await request(app).get("/api/queues/1");
   expect(res.status).toBe(200);
   expect(res.body.entries.map((e) => e.position)).toEqual([1, 2, 3]);
   expect(res.body.entries[0].visitorName).toBe("Alex Visitor");
+});
+
+test("POST /api/queues/:serviceId/serve-next serves the first visitor", async () => {
+  const res = await request(app).post("/api/queues/1/serve-next");
+
+  expect(res.status).toBe(200);
+  expect(res.body.visitorName).toBe("Alex Visitor");
+  expect(res.body.status).toBe("served");
 });
 
 test("GET /api/queues/:serviceId is 404 for an unknown service", async () => {
