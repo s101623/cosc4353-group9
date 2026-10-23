@@ -1,5 +1,5 @@
 // History screen
-// Uses the shared mock data from mock-data.js (no backend yet)
+// Gets the history from the backend with fetch
 
 // get the visitor who logged in (saved by the login screen)
 var currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
@@ -15,37 +15,13 @@ var historyBody = document.getElementById("historyBody");
 var historyTable = document.getElementById("historyTable");
 var historyMessage = document.getElementById("historyMessage");
 
-// get only this visitor's past queues
-function getMyHistory() {
-  var myHistory = [];
-  for (var i = 0; i < history.length; i++) {
-    if (history[i].userEmail === currentUserEmail) {
-      myHistory.push(history[i]);
-    }
-  }
-  return myHistory;
-}
-
 // show the history in the table
-function showHistory() {
-  var myHistory = getMyHistory();
-
+function showHistory(myHistory) {
   if (myHistory.length === 0) {
     historyTable.style.display = "none";
     historyMessage.textContent = "You have not joined any queues yet.";
     return;
   }
-
-  // newest first (dates look like 2026-09-24, so we can compare them as text)
-  myHistory.sort(function (a, b) {
-    if (a.date < b.date) {
-      return 1;
-    }
-    if (a.date > b.date) {
-      return -1;
-    }
-    return 0;
-  });
 
   for (var i = 0; i < myHistory.length; i++) {
     var row = document.createElement("tr");
@@ -66,5 +42,15 @@ function showHistory() {
   }
 }
 
-// run when the page first loads
-showHistory();
+// ask the server for this visitor's history (newest first)
+fetch("/api/history/" + currentUserEmail)
+  .then(function (response) {
+    return response.json();
+  })
+  .then(function (myHistory) {
+    showHistory(myHistory);
+  })
+  .catch(function () {
+    historyTable.style.display = "none";
+    historyMessage.textContent = "Could not load your history. Please try again.";
+  });
