@@ -1,5 +1,5 @@
 // User Dashboard screen
-// Uses the shared mock data from mock-data.js (no backend yet)
+// Gets the queue status, services and notifications from the backend with fetch
 
 // get the visitor who logged in (saved by the login screen)
 var currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
@@ -19,38 +19,6 @@ var serviceList = document.getElementById("serviceList");
 var notificationCount = document.getElementById("notificationCount");
 var notificationList = document.getElementById("notificationList");
 
-// find a service by its id
-function getService(serviceId) {
-  for (var i = 0; i < services.length; i++) {
-    if (services[i].id === serviceId) {
-      return services[i];
-    }
-  }
-  return null;
-}
-
-// find this visitor's current queue entry (or null if they are not in a queue)
-function findMyEntry() {
-  for (var i = 0; i < queueEntries.length; i++) {
-    if (queueEntries[i].userEmail === currentUserEmail && queueEntries[i].status !== "served") {
-      return queueEntries[i];
-    }
-  }
-  return null;
-}
-
-// work out the visitor's position in line for their service
-function getPosition(myEntry) {
-  var position = 0;
-  for (var i = 0; i < queueEntries.length; i++) {
-    var entry = queueEntries[i];
-    if (entry.serviceId === myEntry.serviceId && entry.status !== "served" && entry.joinedAt <= myEntry.joinedAt) {
-      position++;
-    }
-  }
-  return position;
-}
-
 // show the welcome message
 function showWelcome() {
   welcomeMessage.textContent = "Welcome back, " + currentUserName + "!";
@@ -58,61 +26,76 @@ function showWelcome() {
 
 // show the current queue status
 function showCurrentQueue() {
-  var myEntry = findMyEntry();
-
-  if (myEntry === null) {
-    currentQueueInfo.textContent = "You are not in a queue right now.";
-    viewQueueLink.style.display = "none";
-    return;
-  }
-
-  var service = getService(myEntry.serviceId);
-  var position = getPosition(myEntry);
-  // simple estimate: people ahead of you times the service duration
-    var wait = position * service.duration;
-
-  currentQueueInfo.textContent = service.name + " | Position: #" + position + " | Estimated wait: " + wait + " minutes | Status: " + myEntry.status;
-  viewQueueLink.style.display = "inline";
+  fetch("/api/queues/status/" + currentUserEmail)
+    .then(function (response) {
+      // 404 means the visitor is not in a queue
+      if (!response.ok) {
+        currentQueueInfo.textContent = "You are not in a queue right now.";
+        viewQueueLink.style.display = "none";
+        return;
+      }
+      return response.json().then(function (status) {
+        currentQueueInfo.textContent = status.serviceName + " | Position: #" + status.position + " | Estimated wait: " + status.estimatedWait + " minutes | Status: " + status.status;
+        viewQueueLink.style.display = "inline";
+      });
+    })
+    .catch(function () {
+      currentQueueInfo.textContent = "Could not load your queue. Please try again.";
+      viewQueueLink.style.display = "none";
+    });
 }
 
 // show the services that are open
 function showServices() {
-  for (var i = 0; i < services.length; i++) {
-    if (services[i].isOpen) {
-      var item = document.createElement("li");
-      item.textContent = services[i].name + " (about " + services[i].duration + " minutes)";
-      serviceList.appendChild(item);
-    }
-  }
+  fetch("/api/services")
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (services) {
+      for (var i = 0; i < services.length; i++) {
+        if (services[i].isOpen) {
+          var item = document.createElement("li");
+          item.textContent = services[i].name + " (about " + services[i].duration + " minutes)";
+          serviceList.appendChild(item);
+        }
+      }
 
-  if (serviceList.children.length === 0) {
-    serviceList.textContent = "No services are open right now.";
-  }
+      if (serviceList.children.length === 0) {
+        serviceList.textContent = "No services are open right now.";
+      }
+    })
+    .catch(function () {
+      serviceList.textContent = "Could not load the services. Please try again.";
+    });
 }
 
 // show a short summary of this visitor's notifications
 function showNotifications() {
-  var myNotifications = [];
-  var unread = 0;
-
-  for (var i = 0; i < notifications.length; i++) {
-    if (notifications[i].userEmail === currentUserEmail) {
-      myNotifications.push(notifications[i]);
-      if (notifications[i].read === false) {
-        unread++;
+  fetch("/api/notifications/" + currentUserEmail)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (myNotifications) {
+      var unread = 0;
+      for (var i = 0; i < myNotifications.length; i++) {
+        if (myNotifications[i].read === false) {
+          unread++;
+        }
       }
-    }
-  }
 
-  notificationCount.textContent = "You have " + unread + " unread notification(s).";
+      notificationCount.textContent = "You have " + unread + " unread notification(s).";
 
-  // show the 3 most recent ones
-  var start = Math.max(0, myNotifications.length - 3);
-  for (var j = myNotifications.length - 1; j >= start; j--) {
-    var item = document.createElement("li");
-    item.textContent = myNotifications[j].message + " (" + myNotifications[j].time + ")";
-    notificationList.appendChild(item);
-  }
+      // the server sends the newest first, so show the first 3
+      var end = Math.min(3, myNotifications.length);
+      for (var j = 0; j < end; j++) {
+        var item = document.createElement("li");
+        item.textContent = myNotifications[j].message + " (" + myNotifications[j].time + ")";
+        notificationList.appendChild(item);
+      }
+    })
+    .catch(function () {
+      notificationCount.textContent = "Could not load your notifications. Please try again.";
+    });
 }
 
 // run when the page first loads
