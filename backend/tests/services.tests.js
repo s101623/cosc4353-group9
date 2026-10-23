@@ -99,6 +99,6 @@ describe("Service Management", function () {
             updateService(services, 99, {
                 duration: 20
             });
-        }).toThrow("Service not found.");
+        }).toThrow("That service does not exist");
     });
 });
