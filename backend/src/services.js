@@ -46,8 +46,8 @@ function updateService(services, serviceId, updates) {
     });
 
     if (!service) {
-        throw new Error("Service not found.");
-    }
+    throw new Error("That service does not exist");
+}
 
     const updatedService = {
         ...service,
