@@ -87,7 +87,12 @@ router.post("/queues/:serviceId/serve-next", function (req, res) {
             });
         }
 
-        const servedUser = serveNextUser(db.queueEntries, serviceId);
+       const servedUser = serveNextUser(
+    db.queueEntries,
+    db.services,
+    db.history,
+    serviceId
+);
         res.json(servedUser);
     } catch (err) {
         sendError(res, err);
