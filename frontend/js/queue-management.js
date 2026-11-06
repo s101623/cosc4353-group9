@@ -18,6 +18,12 @@ async function loadServices() {
         serviceSelect.appendChild(option);
     });
 
+    // the dashboard's Manage Queue button links here with ?service=<id>
+    const requestedId = new URLSearchParams(window.location.search).get("service");
+    if (services.some(function (service) { return String(service.id) === requestedId; })) {
+        serviceSelect.value = requestedId;
+    }
+
     if (services.length > 0) {
         await displayQueue();
     }

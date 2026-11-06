@@ -11,7 +11,7 @@
 <body>
     <header>
       <h2>QueueSmart</h2>
-        <a href="index.html" class="logout" id="logout">Log Out</a>
+        <button type="button" class="logout" id="logout">Log Out</button>
   </header>
 
     <div class="admin-layout">
@@ -25,9 +25,53 @@
         <h1>Admin Dashboard</h1>
           <section>
                <h2>Service Overview</h2>
-          
+
+               <form id="service-filters" class="filter-bar">
+                   <div class="field filter-search">
+                       <label for="filter-search">Search</label>
+                       <input type="search" id="filter-search" placeholder="Service name or description">
+                   </div>
+                   <div class="field">
+                       <label for="filter-category">Service type</label>
+                       <select id="filter-category">
+                           <option value="">All types</option>
+                       </select>
+                   </div>
+                   <div class="field">
+                       <label for="filter-status">Status</label>
+                       <select id="filter-status">
+                           <option value="">All statuses</option>
+                           <option value="open">Open</option>
+                           <option value="closed">Closed</option>
+                       </select>
+                   </div>
+                   <div class="field">
+                       <label for="filter-priority">Priority</label>
+                       <select id="filter-priority">
+                           <option value="">All priorities</option>
+                           <option value="high">High</option>
+                           <option value="medium">Medium</option>
+                           <option value="low">Low</option>
+                       </select>
+                   </div>
+                   <div class="field">
+                       <label for="sort-services">Sort by</label>
+                       <select id="sort-services">
+                           <option value="name">Name (A-Z)</option>
+                           <option value="waiting">Most waiting</option>
+                           <option value="priority">Highest priority</option>
+                           <option value="duration">Shortest duration</option>
+                       </select>
+                   </div>
+               </form>
+
+               <div class="filter-summary">
+                   <p id="service-count" aria-live="polite"></p>
+                   <button type="button" id="clear-filters" class="button-secondary">Clear Filters</button>
+               </div>
+
               <div id="service-list">
-                   <!-- services will be displayedusing mock data -->
+                   <!-- services are grouped by type and displayed from the backend API -->
                  </div>
           </section>
         </main>

@@ -12,6 +12,18 @@ async function loadServices() {
     displayServices();
 }
 
+function startEditing(service) {
+    document.getElementById("service-name").value = service.name;
+    document.getElementById("description").value = service.description;
+    document.getElementById("duration").value = service.duration;
+    document.getElementById("priority").value = service.priority;
+
+    editingService = service;
+
+    serviceForm.querySelector('button[type="submit"]').textContent =
+        "Save Changes";
+}
+
 function displayServices() {
     serviceManagementList.innerHTML = "";
 
@@ -34,15 +46,7 @@ function displayServices() {
         editButton.textContent = "Edit";
 
         editButton.addEventListener("click", function () {
-            document.getElementById("service-name").value = service.name;
-            document.getElementById("description").value = service.description;
-            document.getElementById("duration").value = service.duration;
-            document.getElementById("priority").value = service.priority;
-
-            editingService = service;
-
-            serviceForm.querySelector('button[type="submit"]').textContent =
-                "Save Changes";
+            startEditing(service);
         });
 
         serviceCard.appendChild(serviceName);
@@ -105,4 +109,13 @@ serviceForm.addEventListener("submit", async function (event) {
     await loadServices();
 });
 
-loadServices();
+// the dashboard's Edit Service button links here with ?edit=<id>
+loadServices().then(function () {
+    const requestedId = new URLSearchParams(window.location.search).get("edit");
+    const requested = services.find(function (service) {
+        return String(service.id) === requestedId;
+    });
+    if (requested) {
+        startEditing(requested);
+    }
+});
