@@ -4,10 +4,7 @@ function getNow() {
   return new Date().toISOString().slice(0, 16).replace("T", " ");
 }
 
-function addNotification(notifications, record) {
-  if (!Array.isArray(notifications) || !record) {
-    throw new Error("A notifications list and a record are required");
-  }
+function validateNotification(record) {
   if (typeof record.userEmail !== "string" || record.userEmail.trim() === "") {
     throw new Error("User email is required");
   }
@@ -23,6 +20,13 @@ function addNotification(notifications, record) {
   if (record.message.length > 200) {
     throw new Error("Message must be 200 characters or less");
   }
+}
+
+function addNotification(notifications, record) {
+  if (!Array.isArray(notifications) || !record) {
+    throw new Error("A notifications list and a record are required");
+  }
+  validateNotification(record);
 
   let highestId = 0;
   for (let i = 0; i < notifications.length; i++) {
@@ -83,4 +87,4 @@ function notifyAlmostReady(notifications, userEmail, serviceName) {
     message: "Almost ready. You are next for " + serviceName + "."
   });
 }
-module.exports = { addNotification, getUserNotifications, notifyJoined, notifyAlmostReady };
+module.exports = { addNotification, getUserNotifications, notifyJoined, notifyAlmostReady, validateNotification, getNow };
