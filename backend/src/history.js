@@ -1,9 +1,7 @@
 const OUTCOMES = ["served", "left queue", "no show"];
 
-function addHistoryRecord(history, record) {
-  if (!Array.isArray(history) || !record) {
-    throw new Error("A history list and a record are required");
-  }
+// checks one history record and throws an Error if something is wrong
+function validateHistoryRecord(record) {
   if (typeof record.userEmail !== "string" || record.userEmail.trim() === "") {
     throw new Error("User email is required");
   }
@@ -19,6 +17,13 @@ function addHistoryRecord(history, record) {
   if (!OUTCOMES.includes(record.outcome)) {
     throw new Error("Outcome must be served, left queue, or no show");
   }
+}
+
+function addHistoryRecord(history, record) {
+  if (!Array.isArray(history) || !record) {
+    throw new Error("A history list and a record are required");
+  }
+  validateHistoryRecord(record);
 
   // new id = highest existing id + 1, so ids never repeat
   let highestId = 0;
@@ -59,4 +64,4 @@ function getUserHistory(history, userEmail) {
   return mine;
 }
 
-module.exports = { addHistoryRecord, getUserHistory };
+module.exports = { addHistoryRecord, getUserHistory, validateHistoryRecord };
