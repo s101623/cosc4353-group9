@@ -2,7 +2,11 @@
 // so the pages can call fetch("/api/...") on the same origin.
 const path = require("path");
 const express = require("express");
+const { seed } = require("./src/seed");
 const routes = require("./src/routes");
+
+// an empty database gets the starting services and test accounts
+seed();
 
 const app = express();
 app.use(express.json());
